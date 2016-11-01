@@ -161,12 +161,21 @@ if __name__ == "__main__":
     trainLen = int(length*0.8)
     validLen = int((length - trainLen)/2)
     testLen = length - trainLen - validLen
-    trainX = X[0:trainLen]
+    randNums = np.random.choice(length, size = length, replace = False)
+    trainX = X[randNums[0:trainLen]]
+    trainY = Y[randNums[0:trainLen]]
+    validX = X[randNums[trainLen:trainLen + validLen]]
+    validY = Y[randNums[trainLen:trainLen + validLen]]
+    testX = X[randNums[trainLen + validLen:]]
+    testY = Y[randNums[trainLen + validLen:]]
+    
+    """trainX = X[0:trainLen]
     trainY = Y[0:trainLen]
     validX = X[trainLen:trainLen + validLen]
     validY = Y[trainLen:trainLen + validLen]
     testX = X[trainLen + validLen:]
-    testY = Y[trainLen + validLen:]
+    testY = Y[trainLen + validLen:]"""
+    
     
     var = []
     for i in range(0,trainX.shape[1]):
@@ -184,7 +193,7 @@ if __name__ == "__main__":
     ErmsMinTrain = float("Inf")
     ErmsMinValid = float("Inf")
     for m in range(4,5):
-        randRows = np.random.randint(trainX.shape[0], size=m)        
+        randRows = np.random.choice(trainX.shape[0], size=m, replace = False)        
         mu = trainX[randRows,:]
         phiTrain = np.ones(shape = (trainX.shape[0],m))
         
@@ -258,12 +267,12 @@ if __name__ == "__main__":
     plt.title("LeToR Closed Form Solution")
     plt.show()
         
-    #stochastic gradient descent
-    eta = 0.1
+    #stochastic gradient descent  #0.3
+    eta = 0.27
     mSh = validMinValues['m']
     costValues = []
     wSh = np.ones((mSh,1))
-    iterations = 100
+    iterations = 50
     for i in range(0,iterations):
         eyeSh = np.eye(mSh, k = validMinValues['lamb'])
         lambWSh = np.transpose(np.dot(eyeSh,wSh))
@@ -297,7 +306,7 @@ if __name__ == "__main__":
     plt.title("LeToR Cost Function for eta = 0.1")
     plt.show()
     
-    #synthetic()
+    #synthetic()m = 56 eta = 0.03
     
         
     
