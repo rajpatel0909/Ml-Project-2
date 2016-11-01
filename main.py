@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 #def letor():
     
     
+    
 
 def synthetic():
     X = np.matrix
@@ -133,6 +134,7 @@ def synthetic():
             ErmsShMin = ErmsSh
         eta = eta * 3
     
+    
 if __name__ == "__main__":
     print "Hello World"
     #letor()
@@ -253,10 +255,11 @@ if __name__ == "__main__":
     plt.plot(graphX,predic,'r--', graphX, testY, 'b--')
     plt.xlabel("data points")
     plt.ylabel("values")
+    plt.title("LeToR Closed Form Solution")
     plt.show()
         
     #stochastic gradient descent
-    eta = 0.03
+    eta = 0.1
     mSh = validMinValues['m']
     costValues = []
     wSh = np.ones((mSh,1))
@@ -283,6 +286,7 @@ if __name__ == "__main__":
     plt.plot(graphX,predic,'r--', graphX, testY, 'b--')
     plt.xlabel("data points")
     plt.ylabel("values")
+    plt.title("LeToR Stochastic Gradient Descent")
     plt.show()
     
     graphCostX = list(range(iterations))
@@ -290,8 +294,8 @@ if __name__ == "__main__":
     plt.scatter(graphCostX, costValues)
     plt.xlabel("iterations")
     plt.ylabel("cost")
+    plt.title("LeToR Cost Function for eta = 0.1")
     plt.show()
-    
     
     #synthetic()
     
