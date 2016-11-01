@@ -6,6 +6,7 @@ Created on Mon Oct 31 14:06:30 2016
 """
 import numpy as np
 import csv
+import matplotlib.pyplot as plt
 
 #def letor():
     
@@ -231,18 +232,40 @@ if __name__ == "__main__":
                 validMinValues['phiValid'] = phiValid
                 validMinValues['w'] = w
                 validMinValues['rms'] = ErmsValid
-            
+                validMinValues['mu'] = mu
+    
+
+    #testing trained models
+    phiTest = np.ones(shape = (testX.shape[0],validMinValues['m']))
+    mu = validMinValues['mu']
+    for i in range(0,testX.shape[0]):
+        for j in range(1,validMinValues['m']):
+            XminusMu = np.subtract(testX[i],mu[j-1])
+            phiTest[i][j]= np.exp(-0.5*(np.dot(np.dot(XminusMu,sigmaInv),(np.transpose(XminusMu)))))
+    
+    predic = np.dot(phiTest,validMinValues['w'])
+    diff = [np.array(predic),np.array(testY)]
+    graphX = list(range(testLen))
+    TminusP = testY - predic
+    Erms = np.dot(np.transpose(TminusP),TminusP)
+    ErmsTest = np.sqrt(Erms/testLen)
+    plt.figure(1)
+    plt.plot(graphX,predic,'r--', graphX, testY, 'b--')
+    plt.xlabel("data points")
+    plt.ylabel("values")
+    plt.show()
+        
     #stochastic gradient descent
     eta = 0.4
     mSh = validMinValues['m']
-    wSh = np.ones((trainX.shape[1],1))
+    wSh = np.ones((mSh,1))
     for i in range(0,50):
         eyeSh = np.eye(mSh, k = validMinValues['lamb'])
         lambWSh = np.transpose(np.dot(eyeSh,wSh))
-        tempW = np.transpose(-eta*np.add((-1*np.dot(np.transpose(trainY-np.dot(trainX,wSh)),trainX)),lambWSh))
+        tempW = np.transpose(-eta*np.add((-1*np.dot(np.transpose(trainY-np.dot(phiTrain,wSh)),phiTrain)),lambWSh))
         wSh += (tempW/trainLen)
     
-    phiWSh = np.dot(trainX,wSh)
+    phiWSh = np.dot(phiTrain,wSh)
     TminusPSh = trainY - phiWSh    
     ErmsSh = np.dot(np.transpose(TminusPSh),TminusPSh)
     ErmsSh = np.sqrt(ErmsSh/trainLen)
