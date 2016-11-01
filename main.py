@@ -243,8 +243,8 @@ if __name__ == "__main__":
             XminusMu = np.subtract(testX[i],mu[j-1])
             phiTest[i][j]= np.exp(-0.5*(np.dot(np.dot(XminusMu,sigmaInv),(np.transpose(XminusMu)))))
     
+            
     predic = np.dot(phiTest,validMinValues['w'])
-    diff = [np.array(predic),np.array(testY)]
     graphX = list(range(testLen))
     TminusP = testY - predic
     Erms = np.dot(np.transpose(TminusP),TminusP)
@@ -256,19 +256,43 @@ if __name__ == "__main__":
     plt.show()
         
     #stochastic gradient descent
-    eta = 0.4
+    eta = 0.03
     mSh = validMinValues['m']
+    costValues = []
     wSh = np.ones((mSh,1))
-    for i in range(0,50):
+    iterations = 100
+    for i in range(0,iterations):
         eyeSh = np.eye(mSh, k = validMinValues['lamb'])
         lambWSh = np.transpose(np.dot(eyeSh,wSh))
         tempW = np.transpose(-eta*np.add((-1*np.dot(np.transpose(trainY-np.dot(phiTrain,wSh)),phiTrain)),lambWSh))
         wSh += (tempW/trainLen)
+        cost1 = trainY - np.dot(phiTrain,wSh)
+        cost2 = np.dot(np.transpose(cost1),cost1)
+        costValues.append(cost2/trainLen)
     
     phiWSh = np.dot(phiTrain,wSh)
     TminusPSh = trainY - phiWSh    
     ErmsSh = np.dot(np.transpose(TminusPSh),TminusPSh)
     ErmsSh = np.sqrt(ErmsSh/trainLen)
+    
+    
+    predic = np.dot(phiTest,wSh)
+    graphX = list(range(testLen))
+    
+    plt.figure(2)
+    plt.plot(graphX,predic,'r--', graphX, testY, 'b--')
+    plt.xlabel("data points")
+    plt.ylabel("values")
+    plt.show()
+    
+    graphCostX = list(range(iterations))
+    plt.figure(3)
+    plt.scatter(graphCostX, costValues)
+    plt.xlabel("iterations")
+    plt.ylabel("cost")
+    plt.show()
+    
+    
     #synthetic()
     
         
