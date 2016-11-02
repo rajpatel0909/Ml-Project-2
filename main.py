@@ -155,34 +155,43 @@ def letor():
     
 
     #stochastic gradient descent  #0.3
+    Eglobal = float("Inf")
+    minEta = 0
     eta = 1
-    mSh = validMinValues['m']
-    costValues = []
-    wSh = np.ones((mSh,1))
-    iterations = 50
-    for i in range(0,iterations):
-        eyeSh = np.eye(mSh, k = validMinValues['lamb'])
-        lambWSh = np.transpose(np.dot(eyeSh,wSh))
-        tempW = np.transpose(-eta*np.add((-1*np.dot(np.transpose(trainY-np.dot(phiTrain,wSh)),phiTrain)),lambWSh))
-        wSh += (tempW/trainLen)
-        cost1 = trainY - np.dot(phiTrain,wSh)
-        cost2 = np.dot(np.transpose(cost1),cost1)
-        costValues.append(np.sqrt(cost2/trainLen))
-    
-    phiWSh = np.dot(phiTrain,wSh)
-    TminusPSh = trainY - phiWSh    
-    ErmsSh = np.dot(np.transpose(TminusPSh),TminusPSh)
-    ErmsShTrain = np.sqrt(ErmsSh/trainLen)
-    
-    phiWSh = np.dot(phiValid,wSh)
-    TminusPSh = validY - phiWSh    
-    ErmsSh = np.dot(np.transpose(TminusPSh),TminusPSh)
-    ErmsShValid = np.sqrt(ErmsSh/validLen)
-    
-    phiWSh = np.dot(phiTest,wSh)
-    TminusPSh = testY - phiWSh    
-    ErmsSh = np.dot(np.transpose(TminusPSh),TminusPSh)
-    ErmsShTest = np.sqrt(ErmsSh/testLen)
+    while(eta < 2):
+        mSh = validMinValues['m']
+        costValues = []
+        wSh = np.ones((mSh,1))
+        iterations = 50
+        for i in range(0,iterations):
+            eyeSh = np.eye(mSh, k = validMinValues['lamb'])
+            lambWSh = np.transpose(np.dot(eyeSh,wSh))
+            tempW = np.transpose(-eta*np.add((-1*np.dot(np.transpose(trainY-np.dot(phiTrain,wSh)),phiTrain)),lambWSh))
+            wSh += (tempW/trainLen)
+            cost1 = trainY - np.dot(phiTrain,wSh)
+            cost2 = np.dot(np.transpose(cost1),cost1)
+            costValues.append(np.sqrt(cost2/trainLen))
+        
+        phiWSh = np.dot(phiTrain,wSh)
+        TminusPSh = trainY - phiWSh    
+        ErmsSh = np.dot(np.transpose(TminusPSh),TminusPSh)
+        ErmsShTrain = np.sqrt(ErmsSh/trainLen)
+        
+        phiWSh = np.dot(phiValid,wSh)
+        TminusPSh = validY - phiWSh    
+        ErmsSh = np.dot(np.transpose(TminusPSh),TminusPSh)
+        ErmsShValid = np.sqrt(ErmsSh/validLen)
+        
+        phiWSh = np.dot(phiTest,wSh)
+        TminusPSh = testY - phiWSh    
+        ErmsSh = np.dot(np.transpose(TminusPSh),TminusPSh)
+        ErmsShTest = np.sqrt(ErmsSh/testLen)
+        
+        if(Eglobal > ErmsShValid):
+                Eglobal = ErmsShValid
+                minEta = eta
+            
+        eta = eta*3
     
     """
     predic = np.dot(phiTest,wSh)
@@ -202,6 +211,7 @@ def letor():
     plt.ylabel("cost")
     plt.title("LeToR Cost Function for eta = 1")
     plt.show()"""
+    
     
     
     
@@ -387,7 +397,6 @@ def synthetic():
             Eglobal = ErmsShValid
             minEta = eta
         
-        print eta
         eta = eta*3
     
     phiWSh = np.dot(phiTest,wSh)
@@ -420,7 +429,6 @@ def synthetic():
 if __name__ == "__main__":
     #print "Hello World"
     letor()
-    
     
     synthetic()
     
