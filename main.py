@@ -6,12 +6,12 @@ Created on Mon Oct 31 14:06:30 2016
 """
 import numpy as np
 import csv
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 def letor():
     X = np.matrix
     Y = np.matrix
-    print "letor"
+    print "LeToR Data Set"
     file = open("Querylevelnorm.txt")
     input = []
     for line in file:
@@ -68,7 +68,7 @@ def letor():
     ErmsMinTrain = float("Inf")
     ErmsMinValid = float("Inf")
     
-    for m in range(35,36):
+    for m in range(33,34):
         #print m
         randRows = np.random.choice(trainX.shape[0], size=m, replace = False)
         #randRows = np.random.randint(trainX.shape[0], size=m)        
@@ -158,8 +158,8 @@ def letor():
     #stochastic gradient descent  #0.3
     Eglobal = float("Inf")
     minEta = 0
-    eta = 1
-    while(eta < 2):
+    eta = 0.7
+    while(eta < 0.8):
         mSh = validMinValues['m']
         costValues = []
         wSh = np.ones((mSh,1))
@@ -212,12 +212,18 @@ def letor():
     plt.ylabel("cost")
     plt.title("LeToR Cost Function for eta = 1")
     plt.show()"""
-    
-    
-    
+    print 'Closed form solution'
+    print 'Minimum Erms for training data = ',ErmsMinTrain[0][0]
+    print 'Minimum Erms for validation data = ',ErmsMinValid[0][0]
+    print 'Minimum Erms for test data = ',ErmsTest[0][0]
+    print 'Stochastic Gradient Descent'
+    print 'Minimum Erms for training data = ',ErmsShTrain[0][0]
+    print 'Minimum Erms for validation data = ',ErmsShValid[0][0]
+    print 'Minimum Erms for test data = ',ErmsShTest[0][0]
     
 
 def synthetic():
+    print 'Synthetic Data Set'
     X = np.matrix
     Y = np.matrix
     inFile = open("input.csv", 'rU')
@@ -370,12 +376,12 @@ def synthetic():
     #stochastic gradient descent  
     Eglobal = float("Inf")
     minEta = 0
-    eta = 0.27
-    while(eta < 0.3):
+    eta = 0.1
+    while(eta < 0.2):
         mSh = validMinValues['m']
         costValues = []
         wSh = np.ones((mSh,1))
-        iterations = 50
+        iterations = 200
         for i in range(0,iterations):
             eyeSh = np.eye(mSh, k = validMinValues['lamb'])
             lambWSh = np.transpose(np.dot(eyeSh,wSh))
@@ -423,8 +429,17 @@ def synthetic():
     plt.scatter(graphCostX, costValues)
     plt.xlabel("iterations")
     plt.ylabel("cost")
-    plt.title("Synthetic Cost Function for eta = 0.01")
+    plt.title("Synthetic Cost Function for eta = 0.1")
     plt.show()"""
+    
+    print 'Closed form solution'
+    print 'Minimum Erms for training data = ',ErmsMinTrain[0][0]
+    print 'Minimum Erms for validation data = ',ErmsMinValid[0][0]
+    print 'Minimum Erms for test data = ',ErmsTest[0][0]
+    print 'Stochastic Gradient Descent'
+    print 'Minimum Erms for training data = ',ErmsShTrain[0][0]
+    print 'Minimum Erms for validation data = ',ErmsShValid[0][0]
+    print 'Minimum Erms for test data = ',ErmsShTest[0][0]
             
     
     
