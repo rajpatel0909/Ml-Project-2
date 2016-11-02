@@ -127,7 +127,7 @@ def letor():
                 validMinValues['mu'] = mu
             lamb += 0.1
     
-        
+    lamb -= 0.1    
     #testing trained models
     phiTest = np.ones(shape = (testX.shape[0],validMinValues['m']))
     mu = validMinValues['mu']
@@ -194,6 +194,7 @@ def letor():
             
         eta = eta*3
     
+    eta = eta/3
     """
     predic = np.dot(phiTest,wSh)
     graphX = list(range(testLen))
@@ -212,6 +213,12 @@ def letor():
     plt.ylabel("cost")
     plt.title("LeToR Cost Function for eta = 1")
     plt.show()"""
+    print 'Hyper Parameters are: '
+    print 'Optimal value of M is ',m
+    print 'Optimal value of Lambda is ',lamb
+    print 'Optimal value of Eta is ',eta
+    print 'Mu matrix is ',mu
+    print 'Sigma matrix is ',np.linalg.inv(sigmaInv)
     print 'Closed form solution'
     print 'Minimum Erms for training data = ',ErmsMinTrain[0][0]
     print 'Minimum Erms for validation data = ',ErmsMinValid[0][0]
@@ -344,7 +351,7 @@ def synthetic():
                 validMinValues['mu'] = mu
             lamb += 0.01
     
-        
+    lamb -= 0.01    
     #testing trained models
     phiTest = np.ones(shape = (testX.shape[0],validMinValues['m']))
     mu = validMinValues['mu']
@@ -407,6 +414,7 @@ def synthetic():
         
         eta = eta*3
     
+    eta = eta/3
     phiWSh = np.dot(phiTest,wSh)
     TminusPSh = testY - phiWSh    
     ErmsSh = np.dot(np.transpose(TminusPSh),TminusPSh)
@@ -432,6 +440,12 @@ def synthetic():
     plt.title("Synthetic Cost Function for eta = 0.1")
     plt.show()"""
     
+    print 'Hyper Parameters are: '
+    print 'Optimal value of M is ',m
+    print 'Optimal value of Lambda is ',lamb
+    print 'Optimal value of Eta is ',eta
+    print 'Mu matrix is ',mu
+    print 'Sigma matrix is ',np.linalg.inv(sigmaInv)
     print 'Closed form solution'
     print 'Minimum Erms for training data = ',ErmsMinTrain[0][0]
     print 'Minimum Erms for validation data = ',ErmsMinValid[0][0]
