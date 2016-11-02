@@ -60,7 +60,7 @@ def letor():
      
     sigmaInv = 0.1*np.linalg.inv(np.diag(np.array(var)))
     
-    contourMatrix = np.zeros(shape=(50,6))
+    contourMatrix = np.zeros(shape=(49,6))
 
     
     trainMinValues = {}
@@ -68,7 +68,8 @@ def letor():
     ErmsMinTrain = float("Inf")
     ErmsMinValid = float("Inf")
     
-    for m in range(43,44):
+    for m in range(35,36):
+        #print m
         randRows = np.random.choice(trainX.shape[0], size=m, replace = False)
         #randRows = np.random.randint(trainX.shape[0], size=m)        
         mu = trainX[randRows,:]
@@ -87,7 +88,7 @@ def letor():
                 XminusMu = np.subtract(validX[i],mu[j-1])
                 phiValid[i][j]= np.exp(-0.5*(np.dot(np.dot(XminusMu,sigmaInv),(np.transpose(XminusMu)))))
                 
-        lamb = 0
+        lamb = 0.1
         
         while(lamb < 0.2):
             eye = np.eye(m, k = lamb)
@@ -114,7 +115,7 @@ def letor():
             ErmsValid = np.sqrt(Erms/validLen)
             
             tempIndex = int(lamb*10)
-            contourMatrix[m][tempIndex] = ErmsValid
+            contourMatrix[m-1][tempIndex] = ErmsValid
             
             if(ErmsValid < ErmsMinValid):
                 ErmsMinValid = ErmsValid
@@ -149,7 +150,7 @@ def letor():
     plt.show()
 
     fig = plt.figure(2)    
-    plt.imshow(contourMatrix, interpolation='nearest', cmap=plt.cm.ocean)
+    plt.imshow(contourMatrix, interpolation='nearest', cmap='Greys_r')
     plt.colorbar()
     plt.show()"""
     
@@ -270,7 +271,7 @@ def synthetic():
      
     sigmaInv = 0.1*np.linalg.inv(np.diag(np.array(var)))
     
-    contourMatrix = np.zeros(shape=(50,6))
+    contourMatrix = np.zeros(shape=(49,6))
 
     
     trainMinValues = {}
@@ -279,6 +280,7 @@ def synthetic():
     ErmsMinValid = float("Inf")
     
     for m in range(39,40):
+        #print m
         randRows = np.random.choice(trainX.shape[0], size=m, replace = False)
         #randRows = np.random.randint(trainX.shape[0], size=m)        
         mu = trainX[randRows,:]
@@ -324,7 +326,7 @@ def synthetic():
             ErmsValid = np.sqrt(Erms/validLen)
             
             tempIndex = int(lamb*10)
-            contourMatrix[m][tempIndex] = ErmsValid
+            contourMatrix[m-1][tempIndex] = ErmsValid
             
             if(ErmsValid < ErmsMinValid):
                 ErmsMinValid = ErmsValid
@@ -360,7 +362,7 @@ def synthetic():
     plt.show()
 
     fig = plt.figure(2)    
-    plt.imshow(contourMatrix, interpolation='nearest', cmap=plt.cm.ocean)
+    plt.imshow(contourMatrix, interpolation='nearest', cmap='Greys_r')
     plt.colorbar()
     plt.show()"""
     
@@ -431,6 +433,7 @@ if __name__ == "__main__":
     letor()
     
     synthetic()
+    
     
     
     
